@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:travel_ui/utilites/app_color.dart';
 
 import '../models/activity_model.dart';
 import '../models/destination_model.dart';
@@ -14,6 +15,16 @@ class DestinationScreen extends StatefulWidget {
 }
 
 class _DestinationScreenState extends State<DestinationScreen> {
+  Widget _buildStartTime(String time) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      margin: const EdgeInsets.only(top: 10, right: 5),
+      decoration: BoxDecoration(
+          color: AppColor.secondColor, borderRadius: BorderRadius.circular(10)),
+      child: Text(time, style: const TextStyle(fontSize: 12)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,7 +152,7 @@ class _DestinationScreenState extends State<DestinationScreen> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 15),
                           child: Row(
                             children: [
@@ -163,28 +174,59 @@ class _DestinationScreenState extends State<DestinationScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Container(
-                                              width: 100,
-                                              child: Text(
-                                                activity.name,
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.3,
+                                            child: Text(
+                                              activity.name,
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "\$${activity.price}",
                                                 style: const TextStyle(
                                                     fontSize: 15,
                                                     fontWeight:
                                                         FontWeight.bold),
-                                              )),
-                                          Text(
-                                            "\$${activity.price}",
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold),
+                                              ),
+                                              const Text("per pax",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey))
+                                            ],
                                           )
                                         ],
                                       ),
+                                      Text(activity.type,
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12)),
+                                      Row(
+                                          children: List.generate(
+                                              activity.rating, (_) {
+                                        return Icon(Icons.star,
+                                            color: Colors.yellow[700],
+                                            size: 16);
+                                      })),
+                                      Row(
+                                        children: activity.startTimes
+                                            .map(
+                                                (time) => _buildStartTime(time))
+                                            .toList(),
+                                      )
                                     ],
                                   ),
                                 ),
